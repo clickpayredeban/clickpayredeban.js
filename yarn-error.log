@@ -1,0 +1,81 @@
+Arguments: 
+  /usr/local/Cellar/node/11.3.0_1/bin/node /usr/local/bin/yarn install
+
+PATH: 
+  /Users/gabrielcruz/.rbenv/shims:/usr/local/sbin:/usr/local/opt/postgresql@10/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/usr/local/go/bin
+
+Yarn version: 
+  1.10.1
+
+Node version: 
+  11.3.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  SyntaxError: /Users/gabrielcruz/dev/js/pmntz-js/package.json: Unexpected token } in JSON at position 992
+      at JSON.parse (<anonymous>)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:1136:59
+      at Generator.next (<anonymous>)
+      at step (/usr/local/lib/node_modules/yarn/lib/cli.js:98:30)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:109:13
+
+npm manifest: 
+  {
+    "name": "paymentez-js",
+    "authors": [
+      "Martín Mucito <mmucito@paymentez>"
+    ],
+    "description": "Credit Card input form with validation and allows you to create a token with credit/debit card details in your web apps, by preventing sensitive card data from crossing your server (More information, read PCI compliance).",
+    "version": "1.0.1",
+    "main": "./paymentez-js.min.js",
+    "homepage": "https://paymentez.com",
+    "moduleType": [
+      "globals"
+    ],
+    "keywords": [
+      "Paymentez",
+      "Credit Card Input",
+      "Credit Card Form",
+      "Credit Card Validation",
+      "Tokenize Card"
+    ],
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/paymentez/paymentez.js"
+    },
+    "license": "MIT",
+    "ignore": [
+      "**/.*",
+      "node_modules",
+      "bower_components",
+      "test",
+      "tests"
+    ],
+    "dependences": {
+      "minimatch": ">=3.0.2",
+      "sshpk": ">=1.13.2",
+      "lodash": ">=4.17.13",
+      "cryptiles": ">=4.1.2",
+      "hoek": ">=4.2.1",
+      "diff": ">=3.5.0",
+    },
+    "devDependencies": {
+      "grunt": "^1.0.4",
+      "grunt-contrib-concat": "^0.5.1",
+      "grunt-contrib-connect": "^2.0.0",
+      "grunt-contrib-cssmin": "^3.0.0",
+      "grunt-contrib-jshint": "^2.0.0",
+      "grunt-contrib-less": "^2.0.0",
+      "grunt-contrib-nodeunit": "^2.0.0",
+      "grunt-contrib-uglify-es": "^3.3.0",
+      "grunt-contrib-watch": "^1.1.0"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

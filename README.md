@@ -5,28 +5,14 @@ ClickPayRedebanJS es una biblioteca que permite a los desarrolladores conectar f
 
 ## Instalación
 
-Usted necesitará incluir jQuery y los archivos `paymentez.min.js` y `paymentez.min.css` dentro de su página web especificando "UTF-8" como charset.
-
-Para ambiente de pruebas (staging):
-
+Usted necesitará incluir jQuery y los archivos `payment_[version].min.js` y `payment_[version].min.css` dentro de su página web especificando "UTF-8" como charset.
 
 ```html
 <script src="https://code.jquery.com/jquery-1.11.3.min.js" charset="UTF-8"></script>
 
-<link href="https://cdn.paymentez.com/js/ccapi/stg/paymentez.min.css" rel="stylesheet" type="text/css" />
-<script src="https://cdn.paymentez.com/js/ccapi/stg/paymentez.min.js" charset="UTF-8"></script>
+<link href="https://cdn.clickpayredeban.com/ccapi/sdk/payment_2.0.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.clickpayredeban.com/ccapi/sdk/payment_2.0.min.js" charset="UTF-8"></script>
 ```
-
-Para ambienete productivo:
-
-
-```html
-<script src="https://code.jquery.com/jquery-1.11.3.min.js" charset="UTF-8"></script>
-
-<link href="https://cdn.paymentez.com/js/1.0.1/paymentez.min.css" rel="stylesheet" type="text/css" />
-<script src="https://cdn.paymentez.com/js/1.0.1/paymentez.min.js" charset="UTF-8"></script>
-```
-
 
 ## Uso
 
@@ -35,19 +21,19 @@ Para revisar ejemplos funcionales utilizando ClickPayRedebanJS, revise los [ejem
 
 ### Utilizando el Form de ClickPayRedeban
 
-Cualquier elemento con la clase `paymentez-form` será automáticamente converitdo en una entrada de tarjeta de crédito básica con fecha de vencimiento y el check de CVC.
+Cualquier elemento con la clase `payment-form` será automáticamente converitdo en una entrada de tarjeta de crédito básica con fecha de vencimiento y el check de CVC.
 
 La manera más fácil de comenzar con la ClickPayRedebanForm es insertando el siguiente pedazo de código:
 
 ```html
-<div class="paymentez-form" id="my-card" data-capture-name="true"></div>
+<div class="payment-form" id="my-card" data-capture-name="true"></div>
 ```
-Para obtener el objeto `Card` de la `PaymentezForm`, pregunte al form por su tarjeta.
+Para obtener el objeto `Card` de la `PaymentForm`, pregunte al form por su tarjeta.
 
 
 ```javascript
-var myCard = $('#my-card');
-var cardToSave = myCard.PaymentezForm('card');
+let myCard = $('#my-card');
+let cardToSave = myCard.PaymentForm('card');
 if(cardToSave == null){
   alert("Invalid Card Data");
 }
@@ -60,7 +46,7 @@ Una vez que tenga un objeto no null de la tarjeta (`Card`) del widget, usted pod
 
 ### Biblioteca Init
 
-Usted deberá inicializar la bibliteca.
+Usted deberá inicializar la biblioteca.
 
 ```javascript
 /**
@@ -70,12 +56,12 @@ Usted deberá inicializar la bibliteca.
   * @param client_app_code proporcionado por Click Pay Redeban.
   * @param client_app_key proporcionado por Click Pay Redeban.
   */
-Paymentez.init('stg', 'CLIENT_APP_CODE', 'CLIENT_APP_KEY');
+Payment.init('stg', 'CLIENT_APP_CODE', 'CLIENT_APP_KEY');
 ```
 
 ### addCard Añadir una Tarjeta
 
-addCard convierte los datos confidenciales de una tarjeta, en un token de un solo uso que puede pasar de forma segura a su servidor, para realizar el cobro al usuario.
+La función addCard convierte los datos confidenciales de una tarjeta, en un token uso que puede pasar de forma segura a su servidor, para realizar el cobro al usuario.
 
 
 ```javascript
@@ -87,9 +73,9 @@ addCard convierte los datos confidenciales de una tarjeta, en un token de un sol
  * @param success_callback a callback to receive the token
  * @param failure_callback a callback to receive an error
  */
-Paymentez.addCard(uid, email, cardToSave, successHandler, errorHandler);
+Payment.addCard(uid, email, cardToSave, successHandler, errorHandler);
 
-var successHandler = function(cardResponse) {
+let successHandler = function(cardResponse) {
   console.log(cardResponse.card);
   if(cardResponse.card.status === 'valid'){
     $('#messages').html('Card Successfully Added<br>'+
@@ -119,7 +105,7 @@ var successHandler = function(cardResponse) {
   submitButton.text(submitInitialText);
 };
 
-var errorHandler = function(err) {    
+let errorHandler = function(err) {    
   console.log(err.error);
   $('#messages').html(err.error.type);    
   submitButton.removeAttr("disabled");
@@ -127,13 +113,7 @@ var errorHandler = function(err) {
 };
 ```
 
-El tercer argumento para el addCard es un objeto Card. Una Card (tarjeta) contiene los siguientes campos:
-
-+ number: número de la tarjeta como cadena sin ningún separador, p.e.  '4242424242424242'.
-+ holder_name: nombre del tarjetahabiente.
-+ expiry_month: entero que representa el mes de expiración de la tarjeta, p.e. 12.
-+ expiry_year: entero que representa el año de expixración de la tarjeta, p.e. 2020.
-+ cvc: códito de seguridad de la tarjeta, en cadena. p.e. '123'.
+El tercer argumento para el addCard es un objeto Card que contiene los campos requeridos para realizar la tokenización.
 
 
 ### getSessionId
@@ -142,23 +122,23 @@ El Session ID es un parámetro que ClickPay Redeban utiliza para fines del antif
 Llame este método si usted desea recolectar la información del dispositivo del usuario.
 
 ```javascript
-var session_id = Paymentez.getSessionId();
+let session_id = Payment.getSessionId();
 ```
 
 Una vez que tenga el Session ID, usted puede pasarlo a su servidor para realizar el cargo al usuario.
 
 
-## PaymentezForm Referencia Completa
+## PaymentForm Referencia Completa
 
 ### Inserción Manual
 
-Si desea alterar manualmente los campos utilizados por PaymentezForm para añadir clases adicionales o para establecer el marcador de posición del campo de entrada, nombre o id. Puede rellenar previamente los campos del formulario como se muestra a continuación.
+Si desea alterar manualmente los campos utilizados por PaymentForm para añadir clases adicionales, el placeholder o id. Puede rellenar previamente los campos del formulario como se muestra a continuación.
 
 Esto podría ser útil en caso de que desee procesar el formulario en otro idioma (de forma predeterminada, el formulario se representa en español), o para hacer referencia a alguna entrada por nombre o id.
 
-Por ejemplo si desea mostrar el formulario en Inglés y añadir una clase customizada para el _card_number_
+Por ejemplo si desea mostrar el formulario en Inglés y añadir una clase personalizada para el _card_number_
 ```html
-<div class="paymentez-form">
+<div class="payment-form">
   <input class="card-number my-custom-class" name="card-number" placeholder="Card number">
   <input class="name" id="the-card-name-id" placeholder="Card Holders Name">
   <input class="expiry-month" name="expiry-month">
@@ -171,21 +151,21 @@ Por ejemplo si desea mostrar el formulario en Inglés y añadir una clase custom
 ### Seleccionar Campos
 Usted puede determinar los campos que mostrará en el formulario.
 
-| Field                             | Description                                                |
-| :-------------------------------- | :--------------------------------------------------------- |
-| data-capture-name                 | Nombre del Tarjetahabiente                                 |
-| data-capture-email                | Email del usuario                                          |
-| data-capture-cellphone            | Teléfono celular del usuario                               |
-| data-icon-colour                  | Iconos de color                                            |
+| Field                             | Description                                                      |
+| :-------------------------------- | :--------------------------------------------------------------- |
+| data-capture-name                 | Input para nombre del Tarjetahabiente, requerido para tokenizar  |
+| data-capture-email                | Input para email del usuario                                     |
+| data-capture-cellphone            | Input para teléfono celular del usuario                          |
+| data-icon-colour                  | Iconos de color                                                  |
 | data-use-dropdowns                | Utilice una lista desplegable para establecer la fecha de expiración de la tarjeta   |
-| data-exclusive-types              | Define los tipos de tarjetas permitidos                    |
-| data-invalid-card-type-message    | Define un mensaje customizado para mostrar cuando sea una tarjeta inválida  |
+| data-exclusive-types              | Define los tipos de tarjetas permitidos                          |
+| data-invalid-card-type-message    | Define un mensaje personalizado para mostrar cuando se registre una tarjeta inválida  |
 
 El campo 'data-use-dropdowns' puede resolver el problema que se presenta con la mascara de expiración en dispositivos móviles antiguos.
 
-Integre en el form simplemente, como sigue:
+Integre en el form simplemente, como se muestra a continuación:
 ```html
-<div class="paymentez-form"
+<div class="payment-form"
 id="my-card"
 data-capture-name="true"
 data-capture-email="true"
@@ -195,13 +175,13 @@ data-use-dropdowns="true">
 ```
 
 ### Tipos de tarjetas específicos
-Si desea especificar los tipos de tarjetas permitidos en el formulario,  como Exito o Alkosto. Puede configurarlo como en el siguiente ejemplo:
-Cuando una tarjeta de un tipo no permitido es capturado, la forma se resetea, bloqueando las entradas y mostrando un mensaje
+Si desea especificar los tipos de tarjetas permitidos en el formulario, como Exito o Alkosto. Puede configurarlo como en el siguiente ejemplo:
+Cuando una tarjeta de un tipo no permitido es capturado, el formulario se reinicia, bloqueando las entradas y mostrando un mensaje
 *Tipo de tarjeta invalida para está operación.*
 
 
 ```html
-<div class="paymentez-form"
+<div class="payment-form"
 id="my-card"
 data-capture-name="true"
 data-exclusive-types="ex,ak"
@@ -213,139 +193,51 @@ Revise todos los [tipos de tarjetas](https://developers.clickpayredeban.com/api/
 
 ### Leyendo los Valores
 
-PaymentezForm proporciona funcionalidad que le permite leer los valores del campo de formulario directamente con JavaScript. Esto puede ser útil si desea enviar los valores a través de Ajax.
+PaymentForm proporciona funcionalidad que le permite leer los valores del campo de formulario directamente con JavaScript.
 
-Genera un elemento de PaymentezForm y dele un id único (en este ejemplo `my-card`)
+Genere un elemento de PaymentForm y asigne un id único (en este ejemplo `my-card`)
 
 ```html
-<div class="paymentez-form" id="my-card" data-capture-name="true"></div>
+<div class="payment-form" id="my-card" data-capture-name="true"></div>
 ```
 El siguiente javascript muestra cómo leer cada valor del formulario en variables locales.
 
 
 ```javascript
-var myCard = $('#my-card');
+let myCard = $('#my-card');
 
-var cardNumber = myCard.PaymentezForm('cardNumber');
-var cardType = myCard.PaymentezForm('cardType');
-var name = myCard.PaymentezForm('name');
-var expiryMonth = myCard.PaymentezForm('expiryMonth');
-var expiryYear = myCard.PaymentezForm('expiryYear');
-var fiscalNumber = myCard.PaymentezForm('fiscalNumber');
-var validationOption = myCard.PaymentezForm('validationOption');
+let cardType = myCard.PaymentForm('cardType');
+let name = myCard.PaymentForm('name');
+let expiryMonth = myCard.PaymentForm('expiryMonth');
+let expiryYear = myCard.PaymentForm('expiryYear');
+let fiscalNumber = myCard.PaymentForm('fiscalNumber');
 ```
 
 
 ### Funciones
 
-Para llamar a una función en un elemento PaymentezForm, siga el patrón a continuación.
+Para llamar a una función en un elemento PaymentForm, siga el patrón a continuación.
 Remplace el texto 'function' con el nombre de la función que desea llamar.
 
 ```javascript
-$('#my-card').PaymentezForm('function')
+$('#my-card').PaymentForm('function')
 ```
 
-Las funciones disponibles se enumeran a continuación:
+Las funciones disponibles se enumeran a continuación:s
 | Function          | Description                                    |
 | :---------------- | :--------------------------------------------- |
 | card              | Obtiene la tarjeta del objeto                  |
-| cardType          | Obtiene el tipo de tarjeta que se capturo      |
+| cardType          | Obtiene el tipo de tarjeta que se capturó      |
 | name              | Obtiene el nombre capturado                    |
 | expiryMonth       | Obtiene el mes de expiración de la tarjeta     |
 | expiryYear        | Obtiene el año de expiración de la tarjeta     |
-| fiscalNumber      | Obtiene el número fiscal del usuario           |
-| validationOption  | Obtiene la opción de validación                |
+| fiscalNumber      | Obtiene el número fiscal del usuario / cédula  |
 
 
 
 #### Función CardType
 
-La función `cardType` devolverá una de las siguientes cadenas según el número de tarjeta ingresado.
-Si no se puede determinar el tipo de tarjeta, se le dará una cadena vacía.
+La función `cardType` devolverá una cadena según el número de tarjeta ingresado. Si no se puede determinar el tipo de tarjeta, se le dará una cadena vacía.
 
-
-| Card Type              |
-| :--------------------- |
-| AMEX                   |
-| Diners                 |
-| Diners - Carte Blanche |
-| Discover               |
-| JCB                    |
-| Mastercard             |
-| Visa                   |
-| Visa Electron          |
-| Exito                  |
-
-
-
-### Funciones Estáticas
-
-Si solo desea realizar operaciones simples sin el formulario PaymentezForm, hay una serie de funciones estáticas proporcionadas
-por la biblioteca PaymentezForm que están disponibles.
-
-#### Tipo de Tarjeta de un Número de Tarjeta
-```javascript
-var cardNumber = '4242 4242 4242 4242'; // Los espacios no son importantes
-var cardType = PaymentezForm.cardTypeFromNumber(cardNumber);
-```
-
-#### Limpieza y Enmascarado 
-```javascript
-// var formatMask = 'XXXX XXXX XXXX XXXX'; // Usted podrá manualmente definir su mascara de entrada
-// var formatMask = 'XX+X X XXXX XXXX XXXX'; // Usted podrá añadir caracteres distitos al espacio en su máscara
-var formatMask = PaymentezForm.CREDIT_CARD_NUMBER_VISA_MASK; // O utilizar una máscara predeterminada.
-var cardNumber = '424 2424242 42   42 42';
-var cardNumberWithoutSpaces = PaymentezForm.numbersOnlyString(cardNumber);
-var formattedCardNumber = PaymentezForm.applyFormatMask(cardNumberWithoutSpaces, formatMask);
-```
-
-##### Mascaras
-
-| Variable Name                                    | Mask
-| :----------------------------------------------- | :------------------ |
-| PaymentezForm.CREDIT_CARD_NUMBER_DEFAULT_MASK    | XXXX XXXX XXXX XXXX |
-| PaymentezForm.CREDIT_CARD_NUMBER_VISA_MASK       | XXXX XXXX XXXX XXXX |
-| PaymentezForm.CREDIT_CARD_NUMBER_MASTERCARD_MASK | XXXX XXXX XXXX XXXX |
-| PaymentezForm.CREDIT_CARD_NUMBER_DISCOVER_MASK   | XXXX XXXX XXXX XXXX |
-| PaymentezForm.CREDIT_CARD_NUMBER_JCB_MASK        | XXXX XXXX XXXX XXXX |
-| PaymentezForm.CREDIT_CARD_NUMBER_AMEX_MASK       | XXXX XXXXXX XXXXX   |
-| PaymentezForm.CREDIT_CARD_NUMBER_DINERS_MASK     | XXXX XXXX XXXX XX   |
-| PaymentezForm.CREDIT_CARD_NUMBER_EXITO_MASK      | XXXX XXXX XXXX XXXX |
-
-
-
-### Validación de fecha de expiración 
-El mes de la fecha de expiración puede estar en el intervalo de: 1 = Enero a 12 = Diciembre
-Para el caso de tarjeta 'Exito', estás no tienen fechas de expiración.
-
-```javascript
-var month = 3;
-var year = 2019;
-var valid = PaymentezForm.isExpiryValid(month, year);
-```
-
-El mes de expiración y el año de expiración pueden ser o enteros o cadenas.
-```javascript
-var month = "3";
-var year = "2019";
-var valid = PaymentezForm.isExpiryValid(month, year);
-```
-
-El año de expiración puede ser de 4 o 2 dígitos de longitud.
-```javascript
-var month = "3";
-var year = "19";
-var valid = PaymentezForm.isExpiryValid(month, year);
-```
-
-### Opciones de Validación de Tarjetas
-Son tres las opciones de validaciónes de tarjetas
-
-| Validation Option      | Description
-| :--------------------- | :----------------------------------------------------- |
-| PaymentezForm.AUTH_CVC | Valicación por cvc, la opción más común                |
-| PaymentezForm.AUTH_NIP | Validación por nio (Disponible sólo para tarjetas Exito) |
-| PaymentezForm.AUTH_OTP | Validación por otp (Disponible sólo para tarjetas Exito) | 
-
-
+[Marcas permitidas](https://developers.clickpayredeban.com/api/#metodos-de-pago-tarjetas-marcas-de-tarjetas)
 
