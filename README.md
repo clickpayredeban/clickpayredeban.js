@@ -10,8 +10,8 @@ Usted necesitará incluir jQuery y los archivos `payment_[version].min.js` y `pa
 ```html
 <script src="https://code.jquery.com/jquery-1.11.3.min.js" charset="UTF-8"></script>
 
-<link href="https://cdn.clickpayredeban.com/ccapi/sdk/payment_2.0.min.css" rel="stylesheet" type="text/css" />
-<script src="https://cdn.clickpayredeban.com/ccapi/sdk/payment_2.0.min.js" charset="UTF-8"></script>
+<link href="https://cdn.clickpayredeban.com/ccapi/sdk/payment_2.0.0.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.clickpayredeban.com/ccapi/sdk/payment_2.0.0.min.js" charset="UTF-8"></script>
 ```
 
 ## Uso
