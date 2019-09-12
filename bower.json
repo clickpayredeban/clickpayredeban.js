@@ -1,0 +1,31 @@
+{
+  "name": "payment-js",
+  "authors": [
+    "Developer Team <dev@clickpayredeban.com>"
+  ],
+  "description": "Credit Card input form with validation and allows you to create a token with credit/debit card details in your web apps, by preventing sensitive card data from crossing your server (More information, read PCI compliance).",
+  "version": "1.0.1",
+  "main": "./payment-js.min.js",
+  "homepage": "https://developers.clickpayredeban.com",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "Payment",
+    "Credit Card Input",
+    "Credit Card Form",
+    "Credit Card Validation",
+    "Tokenize Card"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "1.11.1"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
